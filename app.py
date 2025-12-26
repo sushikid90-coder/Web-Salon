@@ -52,41 +52,38 @@ PAGE = """
   </div>
 
   <div class="hair-photos">
-    <img src="/static/images/balayage1.jpg">
-    <img src="/static/images/balayage2.jpg">
+    <img src="/static/images/balayage1.jpg" alt="Balayage 1">
+    <img src="/static/images/balayage2.jpg" alt="Balayage 2">
+</div>
   </div>
-
   <div class="hair-note">
     Hiệu ứng sáng tự nhiên, sang trọng.
   </div>
 </div>
-
     <div class="hair-card">
   <div class="hair-head">
     <div class="hair-title">OMBRE</div>
     <div class="hair-price">1.000k – 2.000k</div>
   </div>
-
   <div class="hair-photos">
-    <img src="/static/images/ombre1.jpg">
-    <img src="/static/images/ombre2.jpg">
+    <img src="/static/images/ombre1.jpg" alt="Ombre 1">
+    <img src="/static/images/ombre2.jpg" alt="Ombre 2">
+</div>
   </div>
-
   <div class="hair-note">
     Chuyển màu mềm mại, nữ tính.
   </div>
 </div>
     </div>
-
     <div class="hair-card">
   <div class="hair-head">
     <div class="hair-title">HIGHLIGHT</div>
     <div class="hair-price">400k – 800k</div>
   </div>
-
   <div class="hair-photos">
-    <img src="/static/images/highlight1.jpg">
-    <img src="/static/images/highlight2.jpg">
+    <img src="/static/images/highlight1.jpg" alt="Highlight 1">
+    <img src="/static/images/highlight2.jpg" alt="Highlight 2">
+</div>
   </div>
 
   <div class="hair-note">
@@ -337,6 +334,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
