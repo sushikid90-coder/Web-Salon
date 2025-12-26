@@ -24,68 +24,6 @@ PAGE = """
     th, td{border:1px solid #ddd; padding:8px; text-align:left;}
   </style>
 </head>
-/* ===== Gallery dịch vụ tóc + giá ===== */
-.hair-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-  margin-top:12px;
-}
-
-.hair-card{
-  border:1px solid #f0dbe7;
-  border-radius:16px;
-  overflow:hidden;
-  background:#fff;
-  box-shadow:0 6px 18px rgba(0,0,0,.05);
-}
-
-.hair-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 12px;
-  background:linear-gradient(135deg,#fff7fb,#f7fbff);
-  border-bottom:1px solid #f0e1ea;
-}
-
-.hair-title{
-  font-weight:900;
-  letter-spacing:.5px;
-}
-
-.hair-price{
-  font-weight:900;
-  font-size:13px;
-  padding:6px 10px;
-  border-radius:999px;
-  background:#fff1f6;
-  border:1px dashed #d98ab0;
-  color:#a24c73;
-}
-
-.hair-photos{
-  display:grid;
-  grid-template-rows:1fr 1fr;
-}
-
-.hair-photos img{
-  width:100%;
-  height:170px;
-  object-fit:cover;
-  display:block;
-}
-
-.hair-note{
-  padding:8px 12px;
-  font-size:12px;
-  color:#666;
-  border-top:1px solid #f0e1ea;
-}
-
-@media(max-width:900px){
-  .hair-grid{grid-template-columns:1fr;}
-  .hair-photos img{height:210px;}
 }
 
 <body>
@@ -387,6 +325,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
