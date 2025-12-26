@@ -11,7 +11,7 @@ PAGE = """
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Đặt lịch - Web Salon</title>
+  <title>Bin Hair Studio / Đặt lịch làm tóc Nam Nữ </title>
   <style>
     body{font-family:Arial; max-width:720px; margin:24px auto; padding:0 12px;}
     input, select, textarea, button{width:100%; padding:10px; margin:8px 0; box-sizing:border-box;}
@@ -25,7 +25,146 @@ PAGE = """
   </style>
 </head>
 <body>
-  <h2>Đặt lịch</h2>
+  <h2>Bin Hair Studio</h2><p
+  style="Color : #888 : margin-top: -6px:">
+  Uốn - Nhuộm - Phục hồi - Chăm sóc tóc nữ <?p>
+  <div style="
+  background:#fff;
+  border:1px solid #eee;
+  border-radius:14px;
+  padding:14px;
+  margin:14px 0;
+">
+  <b style="font-size:16px;">💰 Bảng giá dịch vụ</b>
+
+  <table style="margin-top:10px;">
+    <tr>
+      <td>✂️ Cắt + gội + sấy</td>
+      <td><b>100.000đ</b></td>
+    </tr>
+    <tr>
+  <td>🌊 Uốn tóc</td>
+  <td><b>400.000 - 1.000.000đ</b></td>
+</tr>
+
+<tr>
+  <td>🎨 Nhuộm tóc</td>
+  <td><b>300.000 - 900.000đ</b></td>
+</tr>
+
+<tr>
+  <td colspan="2" style="
+    background: linear-gradient(135deg,#f7e7dc,#fdf6f1);
+    border-radius:14px;
+    padding:14px;
+    font-size:14px;
+    color:#555;
+    line-height:1.5;
+  ">
+    💖 <b style="font-size:15px;">Combo Uốn & Nhuộm cao cấp</b><br>
+    <style>
+    .wrap{max-width:1050px;margin:28px auto;padding:0 14px;}
+.header{
+  text-align:center;
+  margin-bottom:14px;
+  padding:16px 12px;
+  border:1px solid #e9d8e6;
+  border-radius:16px;
+  background:linear-gradient(135deg,#fff7fb,#f7fbff);
+}
+.brand{font-size:28px;letter-spacing:1px;margin:0;font-weight:800;}
+.sub{margin:6px 0 0;color:#777;font-size:13px}
+
+.grid{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+.col{flex:1;}
+.card{
+  border:1px solid #eed9e7;
+  border-radius:16px;
+  background:#fff;
+  padding:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  background:#fff1f6;
+  border:1px dashed #d98ab0;
+  color:#a24c73;
+  font-weight:700;
+}
+
+.price-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.price-table td{border-bottom:1px solid #f0e1ea;padding:10px 6px;}
+.price-table td:last-child{text-align:right;font-weight:800;color:#333;}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.gitem{
+  border:1px solid #f0dbe7;
+  border-radius:14px;
+  overflow:hidden;
+  background:#fff;
+}
+.gitem img{width:100%;height:150px;object-fit:cover;display:block;}
+.gcap{padding:8px 10px;font-size:12px;color:#666;}
+.gtitle{font-weight:800;color:#333}
+@media(max-width:900px){
+  .grid{flex-direction:column;}
+  .gallery{grid-template-columns:1fr;}
+  .gitem img{height:190px;}
+}
+</style>
+    Tặng kèm <b>hấp phục hồi bằng máy</b> giúp tóc mềm mượt,
+    giảm hư tổn, giữ màu bền đẹp và vào nếp tự nhiên.<br>
+    <span style="font-size:12px;color:#888;">
+      * Áp dụng khi làm combo trong cùng buổi
+      </span>
+  </td>
+      <tr>
+  <td colspan="2" style="
+    background:#fff3f6;
+    border:1px dashed #f3b6c8;
+    border-radius:14px;
+    padding:14px;
+    margin-top:8px;
+    font-size:14px;
+    color:#555;
+    line-height:1.6;
+  ">
+    🎀 <b style="font-size:15px;color:#b84b6a;">
+      ƯU ĐÃI KHUNG GIỜ VÀNG
+    </b><br>
+
+    ⏰ <b>07:00 – 09:00 sáng</b> giảm ngay <b>10%</b> tổng hóa đơn<br>
+    📅 <b>Đặt lịch online</b> được ưu đãi <b>10%</b><br>
+
+    <span style="font-size:12px;color:#888;">
+      * Áp dụng mỗi khách 1 lần / Không cộng dồn ưu đãi
+    </span>
+  </td>
+
+    </tr>
+    <tr>
+      <td>✨ Phục hồi tóc</td>
+      <td><b>200.000 – 600.000đ</b></td>
+    </tr>
+  </table>
+
+  <div style="font-size:12px;color:#777;margin-top:6px;">
+    * Giá có thể thay đổi theo độ dài và tình trạng tóc
+  </div>
+</div>
   {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
   {% if err %}<div class="err">{{err}}</div>{% endif %}
 
@@ -138,6 +277,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
