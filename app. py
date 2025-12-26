@@ -92,5 +92,6 @@ def admin():
     return render_template_string(ADMIN, ok=ok, rows=rows)
 
 if _name_ == "_main_":
-    print(">>> APP STARTING <<<")
-    app.run(host="127.0.0.1", port=5000, debug=True)
+   print(">>> FORCE START <<<")
+app.run(host="127.0.0.1", port=5000, debug=True)
+
