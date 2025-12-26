@@ -2,96 +2,138 @@ from flask import Flask, request, redirect, url_for, render_template_string
 import sqlite3
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(_name_)
 DB = "bookings.db"
-
-def init_db():
-    with sqlite3.connect(DB) as con:
-        con.execute("""
-        CREATE TABLE IF NOT EXISTS bookings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            created_at TEXT NOT NULL,
-            name TEXT NOT NULL,
-            phone TEXT NOT NULL,
-            date TEXT NOT NULL,
-            time TEXT NOT NULL,
-            service TEXT NOT NULL,
-            combo TEXT,
-            note TEXT
-        )
-        """)
-
-init_db()
 
 PAGE = """
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>Đặt lịch Salon</title></head>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Đặt lịch - Web Salon</title>
+  <style>
+    body{font-family:Arial; max-width:720px; margin:24px auto; padding:0 12px;}
+    input, select, textarea, button{width:100%; padding:10px; margin:8px 0; box-sizing:border-box;}
+    .row{display:flex; gap:10px;}
+    .row > div{flex:1;}
+    .msg{background:#f8fff0; padding:10px; border:1px solid #cde7b0; margin:10px 0;}
+    .err{background:#fff0f0; padding:10px; border:1px solid #f0b0b0; margin:10px 0;}
+    a{color:#0a66c2;}
+    table{width:100%; border-collapse:collapse; margin-top:12px;}
+    th, td{border:1px solid #ddd; padding:8px; text-align:left;}
+  </style>
+</head>
 <body>
-<h2>Đặt lịch</h2>
-<form method="post" action="/book">
-<input name="name" placeholder="Tên"><br>
-<input name="phone" placeholder="SĐT"><br>
-<input type="date" name="date"><br>
-<input type="time" name="time"><br>
-<input name="service" placeholder="Dịch vụ"><br>
-<input name="combo" placeholder="Combo"><br>
-<textarea name="note" placeholder="Ghi chú"></textarea><br>
-<button>Đặt lịch</button>
-</form>
+  <h2>Đặt lịch</h2>
+  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
+  {% if err %}<div class="err">{{err}}</div>{% endif %}
+
+  <form method="post" action="/book">
+    <input name="name" placeholder="Tên"/>
+    <input name="phone" placeholder="SĐT"/>
+    <div class="row">
+      <div><input type="date" name="date"/></div>
+      <div><input type="time" name="time"/></div>
+    </div>
+    <input name="service" placeholder="Dịch vụ (uốn/nhuộm/duỗi...)"/>
+    <input name="combo" placeholder="Combo (nếu có)"/>
+    <textarea name="note" placeholder="Ghi chú"></textarea>
+    <button type="submit">Đặt lịch</button>
+  </form>
+
+  <p>Admin: <code>/admin?key=1234</code></p>
 </body>
 </html>
 """
 
 ADMIN = """
-<h2>Admin</h2>
-{% if not ok %}
-<form>
-<input name="key" placeholder="Key">
-<button>Vào</button>
-</form>
-{% else %}
-<table border=1>
-<tr><th>ID</th><th>Tên</th><th>SĐT</th><th>Ngày</th><th>Giờ</th></tr>
-{% for r in rows %}
-<tr><td>{{r[0]}}</td><td>{{r[2]}}</td><td>{{r[3]}}</td><td>{{r[4]}}</td><td>{{r[5]}}</td></tr>
-{% endfor %}
-</table>
-{% endif %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin - Web Salon</title>
+</head>
+<body style="font-family:Arial; max-width:900px; margin:24px auto; padding:0 12px;">
+  <h2>Admin</h2>
+  {% if not ok %}
+    <p>Sai key. Vào đúng dạng: <code>/admin?key=1234</code></p>
+  {% else %}
+    <p>Đúng key ✅</p>
+    <table>
+      <tr>
+        <th>ID</th><th>Created</th><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Service</th><th>Combo</th><th>Note</th>
+      </tr>
+      {% for r in rows %}
+      <tr>
+        <td>{{r[0]}}</td><td>{{r[1]}}</td><td>{{r[2]}}</td><td>{{r[3]}}</td><td>{{r[4]}}</td><td>{{r[5]}}</td><td>{{r[6]}}</td><td>{{r[7]}}</td><td>{{r[8]}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</body>
+</html>
 """
+
+def init_db():
+    with sqlite3.connect(DB) as con:
+        con.execute("""
+            CREATE TABLE IF NOT EXISTS bookings(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              created_at TEXT NOT NULL,
+              name TEXT NOT NULL,
+              phone TEXT NOT NULL,
+              date TEXT NOT NULL,
+              time TEXT NOT NULL,
+              service TEXT NOT NULL,
+              combo TEXT,
+              note TEXT
+            )
+        """)
+        con.commit()
+
+init_db()
 
 @app.get("/")
 def home():
-    return render_template_string(PAGE)
+    msg = request.args.get("msg", "")
+    err = request.args.get("err", "")
+    return render_template_string(PAGE, msg=msg, err=err)
 
 @app.post("/book")
 def book():
-    name = request.form.get("name")
-    phone = request.form.get("phone")
-    date = request.form.get("date")
-    time = request.form.get("time")
-    service = request.form.get("service")
-    combo = request.form.get("combo")
-    note = request.form.get("note")
+    name = (request.form.get("name") or "").strip()
+    phone = (request.form.get("phone") or "").strip()
+    date = (request.form.get("date") or "").strip()
+    time = (request.form.get("time") or "").strip()
+    service = (request.form.get("service") or "").strip()
+    combo = (request.form.get("combo") or "").strip()
+    note = (request.form.get("note") or "").strip()
+
+    if not (name and phone and date and time and service):
+        return redirect(url_for("home", err="Thiếu thông tin, nhập lại nhé."))
 
     with sqlite3.connect(DB) as con:
         con.execute(
             "INSERT INTO bookings(created_at,name,phone,date,time,service,combo,note) VALUES (?,?,?,?,?,?,?,?)",
-            (datetime.now().isoformat(), name, phone, date, time, service, combo, note)
+            (datetime.now().isoformat(timespec="seconds"), name, phone, date, time, service, combo, note)
         )
-    return redirect("/")
+        con.commit()
+
+    return redirect(url_for("home", msg="Đặt lịch thành công! Salon sẽ liên hệ xác nhận."))
 
 @app.get("/admin")
 def admin():
-    key = request.args.get("key","")
-    ok = key == "1234"
+    key = request.args.get("key", "")
+    admin_key = "1234"   # đổi key tại đây
+    ok = (key == admin_key)
     rows = []
     if ok:
         with sqlite3.connect(DB) as con:
-            rows = con.execute("SELECT * FROM bookings").fetchall()
+            rows = con.execute("SELECT id, created_at, name, phone, date, time, service, combo, note FROM bookings ORDER BY id DESC").fetchall()
     return render_template_string(ADMIN, ok=ok, rows=rows)
 
 if _name_ == "_main_":
-   print(">>> FORCE START <<<")
-app.run(host="127.0.0.1", port=5000, debug=True)
-
+    print(">>> APP STARTING <<<")
+    app.run(host="0.0.0.0", port=5000, debug=True)
