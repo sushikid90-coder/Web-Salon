@@ -52,8 +52,8 @@ PAGE = """
   </div>
 
   <div class="hair-photos">
-    <img src="/static/images/balayage1.jpg" alt="Balayage 1">
-    <img src="/static/images/balayage2.jpg" alt="Balayage 2">
+    <img src="/static/images/balayage1.jpg" alt="balayage 1">
+    <img src="/static/images/balayage2.jpg" alt="balayage 2">
 </div>
   </div>
   <div class="hair-note">
@@ -66,8 +66,8 @@ PAGE = """
     <div class="hair-price">1.000k – 2.000k</div>
   </div>
   <div class="hair-photos">
-    <img src="/static/images/ombre1.jpg" alt="Ombre 1">
-    <img src="/static/images/ombre2.jpg" alt="Ombre 2">
+    <img src="/static/images/ombre1.jpg" alt="ombre 1">
+    <img src="/static/images/ombre2.jpg" alt="ombre 2">
 </div>
   </div>
   <div class="hair-note">
@@ -81,8 +81,8 @@ PAGE = """
     <div class="hair-price">400k – 800k</div>
   </div>
   <div class="hair-photos">
-    <img src="/static/images/highlight1.jpg" alt="Highlight 1">
-    <img src="/static/images/highlight2.jpg" alt="Highlight 2">
+    <img src="/static/images/highlight1.jpg" alt="highlight 1">
+    <img src="/static/images/highlight2.jpg" alt="highlight 2">
 </div>
   </div>
 
@@ -334,6 +334,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
