@@ -158,7 +158,8 @@ def admin():
         with sqlite3.connect(DB) as con:
             rows = con.execute("SELECT id, created_at, name, phone, date, time, service, combo, note FROM bookings ORDER BY id DESC").fetchall()
     return render_template_string(ADMIN, ok=ok, rows=rows, key=key)
-
-if __name__== "__main__":
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+
 
