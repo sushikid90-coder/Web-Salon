@@ -38,6 +38,35 @@ PAGE = """
   <b style="font-size:16px;">💰 Bảng giá dịch vụ</b>
 
   <table style="margin-top:10px;">
+  <div class="card">
+  <span class="badge">✨ Dịch vụ nổi bật</span>
+
+  <div class="gallery">
+    <div class="gitem">
+      <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9" alt="Balayage">
+      <div class="gcap">
+        <div class="gtitle">Balayage</div>
+        Hiệu ứng sáng tự nhiên, sang trọng
+      </div>
+    </div>
+
+    <div class="gitem">
+      <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9" alt="Ombre">
+      <div class="gcap">
+        <div class="gtitle">Ombre</div>
+        Chuyển màu mềm mại, nữ tính
+      </div>
+    </div>
+
+    <div class="gitem">
+      <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c" alt="Highlight">
+      <div class="gcap">
+        <div class="gtitle">Highlight</div>
+        Tạo điểm nhấn & chiều sâu mái tóc
+      </div>
+    </div>
+  </div>
+</div>
     <tr>
       <td>✂️ Cắt + gội + sấy</td>
       <td><b>100.000đ</b></td>
@@ -277,6 +306,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
