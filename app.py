@@ -38,6 +38,8 @@ PAGE = """
   <b style="font-size:16px;">💰 Bảng giá dịch vụ</b>
 
   <table style="margin-top:10px;">
+   <!-- các <tr> bảng giá của bạn -->
+</table>
   <div class="card">
   <span class="badge">✨ Dịch vụ nổi bật</span>
 
@@ -306,6 +308,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
