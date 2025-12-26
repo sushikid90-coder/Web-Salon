@@ -20,148 +20,77 @@ def init_db():
             note TEXT
         )
         """)
+
 init_db()
 
 PAGE = """
 <!doctype html>
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Đặt lịch - Web Salon</title>
-  <style>
-    body{font-family:Arial; max-width:720px; margin:24px auto; padding:0 12px;}
-    input, select, textarea, button{width:100%; padding:10px; margin:8px 0; font-size:16px;}
-    .row{display:flex; gap:10px;}
-    .row > div{flex:1;}
-    .ok{background:#e8fff0; padding:10px; border:1px solid #b7f3c8;}
-    table{width:100%; border-collapse:collapse; margin-top:16px;}
-    td,th{border:1px solid #ddd; padding:8px; font-size:14px;}
-  </style>
-</head>
+<head><meta charset="utf-8"><title>Đặt lịch Salon</title></head>
 <body>
-  <h2>Đặt lịch cắt tóc</h2>
-  {% if msg %}<div class="ok">{{msg}}</div>{% endif %}
-
-  <form method="post" action="/book">
-    <label>Họ tên</label>
-    <input name="name" required placeholder="VD: Trần Thanh Phong"/>
-
-    <label>Số điện thoại</label>
-    <input name="phone" required placeholder="VD: 09xxxxxxxx"/>
-
-    <div class="row">
-      <div>
-        <label>Ngày</label>
-        <input type="date" name="date" required />
-      </div>
-      <div>
-        <label>Giờ</label>
-        <input type="time" name="time" required />
-      </div>
-    </div>
-
-    <label>Dịch vụ</label>
-    <select name="service" required>
-      <option value="Cắt">Cắt</option>
-      <option value="Gội">Gội</option>
-      <option value="Uốn">Uốn</option>
-      <option value="Nhuộm">Nhuộm</option>
-      <option value="Phục hồi">Phục hồi</option>
-    </select>
-
-    <label>Combo</label>
-    <select name="combo">
-      <option value="">Không chọn</option>
-      <option value="Cắt + Gội">Cắt + Gội</option>
-      <option value="Cắt + Uốn">Cắt + Uốn</option>
-      <option value="Cắt + Nhuộm">Cắt + Nhuộm</option>
-      <option value="Uốn + Phục hồi">Uốn + Phục hồi</option>
-    </select>
-
-    <label>Ghi chú</label>
-    <textarea name="note" rows="3" placeholder="VD: Tóc yếu, ưu tiên thợ A..."></textarea>
-
-    <button type="submit">Gửi đặt lịch</button>
-  </form>
-
-  <p style="margin-top:18px;">
-    Xem danh sách lịch (admin): <a href="/admin">/admin</a>
-  </p>
+<h2>Đặt lịch</h2>
+<form method="post" action="/book">
+<input name="name" placeholder="Tên"><br>
+<input name="phone" placeholder="SĐT"><br>
+<input type="date" name="date"><br>
+<input type="time" name="time"><br>
+<input name="service" placeholder="Dịch vụ"><br>
+<input name="combo" placeholder="Combo"><br>
+<textarea name="note" placeholder="Ghi chú"></textarea><br>
+<button>Đặt lịch</button>
+</form>
 </body>
 </html>
 """
 
 ADMIN = """
-<!doctype html>
-<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Admin - Web Salon</title></head>
-<body style="font-family:Arial; max-width:900px; margin:24px auto; padding:0 12px;">
-<h2>Danh sách lịch đặt</h2>
-<form method="get">
-  <input name="key" placeholder="Nhập key admin" value="{{key}}" />
-  <button type="submit">Vào</button>
+<h2>Admin</h2>
+{% if not ok %}
+<form>
+<input name="key" placeholder="Key">
+<button>Vào</button>
 </form>
-
-{% if ok %}
-  <table>
-    <tr><th>ID</th><th>Ngày tạo</th><th>Tên</th><th>SĐT</th><th>Ngày</th><th>Giờ</th><th>Dịch vụ</th><th>Combo</th><th>Ghi chú</th></tr>
-    {% for r in rows %}
-      <tr>
-        <td>{{r[0]}}</td><td>{{r[1]}}</td><td>{{r[2]}}</td><td>{{r[3]}}</td><td>{{r[4]}}</td><td>{{r[5]}}</td>
-        <td>{{r[6]}}</td><td>{{r[7] or ""}}</td><td>{{r[8] or ""}}</td>
-      </tr>
-    {% endfor %}
-  </table>
 {% else %}
-  <p>Nhập đúng key mới xem được.</p>
+<table border=1>
+<tr><th>ID</th><th>Tên</th><th>SĐT</th><th>Ngày</th><th>Giờ</th></tr>
+{% for r in rows %}
+<tr><td>{{r[0]}}</td><td>{{r[2]}}</td><td>{{r[3]}}</td><td>{{r[4]}}</td><td>{{r[5]}}</td></tr>
+{% endfor %}
+</table>
 {% endif %}
-</body></html>
 """
-
-def clean_phone(p: str) -> str:
-    p = (p or "").strip().replace(" ", "")
-    return p
 
 @app.get("/")
 def home():
-    return render_template_string(PAGE, msg=request.args.get("msg"))
+    return render_template_string(PAGE)
 
 @app.post("/book")
 def book():
-    name = (request.form.get("name") or "").strip()
-    phone = clean_phone(request.form.get("phone"))
+    name = request.form.get("name")
+    phone = request.form.get("phone")
     date = request.form.get("date")
     time = request.form.get("time")
     service = request.form.get("service")
     combo = request.form.get("combo")
-    note = (request.form.get("note") or "").strip()
-
-    if not (name and phone and date and time and service):
-        return redirect(url_for("home", msg="Thiếu thông tin, nhập lại nhé."))
+    note = request.form.get("note")
 
     with sqlite3.connect(DB) as con:
         con.execute(
             "INSERT INTO bookings(created_at,name,phone,date,time,service,combo,note) VALUES (?,?,?,?,?,?,?,?)",
-            (datetime.now().isoformat(timespec="seconds"), name, phone, date, time, service, combo, note)
+            (datetime.now().isoformat(), name, phone, date, time, service, combo, note)
         )
-
-    return redirect(url_for("home", msg="Đặt lịch thành công! Salon sẽ liên hệ xác nhận."))
+    return redirect("/")
 
 @app.get("/admin")
 def admin():
-    key = request.args.get("key", "")
-    admin_key = "1234"  # đổi thành key của bạn
-    ok = (key == admin_key)
+    key = request.args.get("key","")
+    ok = key == "1234"
     rows = []
     if ok:
         with sqlite3.connect(DB) as con:
-            rows = con.execute("SELECT id, created_at, name, phone, date, time, service, combo, note FROM bookings ORDER BY id DESC").fetchall()
-    return render_template_string(ADMIN, ok=ok, rows=rows, key=key)
-if __name__ == "__main__":
+            rows = con.execute("SELECT * FROM bookings").fetchall()
+    return render_template_string(ADMIN, ok=ok, rows=rows)
+
+if _name_ == "_main_":
     print(">>> APP STARTING <<<")
     app.run(host="127.0.0.1", port=5000, debug=True)
-
-
-
-
