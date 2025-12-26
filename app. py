@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template_string
 import sqlite3
 from datetime import datetime
 
-app = Flask(_name_)
+app = Flask(__name__)
 DB = "bookings.db"
 
 def init_db():
@@ -159,7 +159,9 @@ def admin():
             rows = con.execute("SELECT id, created_at, name, phone, date, time, service, combo, note FROM bookings ORDER BY id DESC").fetchall()
     return render_template_string(ADMIN, ok=ok, rows=rows, key=key)
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    print(">>> APP STARTING <<<")
+    app.run(host="127.0.0.1", port=5000, debug=True)
+
 
 
 
