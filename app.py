@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template_string
 import sqlite3
 from datetime import datetime
 
-app = Flask(_name_)
+app = Flask(__name__)
 DB = "bookings.db"
 
 PAGE = """
@@ -138,5 +138,6 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
