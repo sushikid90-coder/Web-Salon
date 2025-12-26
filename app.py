@@ -24,8 +24,6 @@ PAGE = """
     th, td{border:1px solid #ddd; padding:8px; text-align:left;}
   </style>
 </head>
-}
-
 <body>
   <h2>Bin Hair Studio</h2><p
   style="Color : #888 : margin-top: -6px:">
@@ -194,7 +192,7 @@ PAGE = """
       ƯU ĐÃI KHUNG GIỜ VÀNG
     </b><br>
 
-    ⏰ <b>07:00 – 09:00 sáng</b> giảm ngay <b>10%</b> tổng hóa đơn<br>
+    ⏰ <b>07:30 – 09:30 sáng</b> giảm ngay <b>10%</b> tổng hóa đơn<br>
     📅 <b>Đặt lịch online</b> được ưu đãi <b>10%</b><br>
 
     <span style="font-size:12px;color:#888;">
@@ -325,6 +323,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
