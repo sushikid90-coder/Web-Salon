@@ -146,6 +146,57 @@ HOME = r"""
       <div class="section">
         <h3 style="margin:10px 0 8px;">💰 Bảng giá dịch vụ</h3>
         <div class="service">
+<div class="gallery-grid">
+
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/balayage-1.jpg') }}">
+    <div class="cap">
+      <b>BALAYAGE</b>
+      <span>1.500k – 2.500k</span>
+    </div>
+  </div>
+
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/balayage-2.jpg') }}">
+    <div class="cap">
+      <b>BALAYAGE</b>
+      <span>1.500k – 2.500k</span>
+    </div>
+  </div>
+
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/ombre-1.jpg') }}">
+    <div class="cap">
+      <b>OMBRE</b>
+      <span>1.000k – 2.000k</span>
+    </div>
+  </div>
+
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/ombre-2.jpg') }}">
+    <div class="cap">
+      <b>OMBRE</b>
+      <span>1.000k – 2.000k</span>
+    </div>
+  </div>
+
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/highlight-1.jpg') }}">
+    <div class="cap">
+      <b>HIGHLIGHT</b>
+      <span>400k – 800k</span>
+    </div>
+  </div>
+
+  <div class="gallery-item">
+    <img src="{{ url_for('static', filename='images/highlight-2.jpg') }}">
+    <div class="cap">
+      <b>HIGHLIGHT</b>
+      <span>400k – 800k</span>
+    </div>
+  </div>
+
+</div>        
 BALAYAGE
 - Balayage
 Phù hợp khách thích tóc Tây,không lộ chân tóc
@@ -335,6 +386,7 @@ def admin():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
