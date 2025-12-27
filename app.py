@@ -370,7 +370,7 @@ PAGE = """
 <body style="font-family:Arial; max-width:900px; margin:24px auto; padding:0 12px;">
   <h2>Admin</h2>
   {% if not ok %}
-    <p>Sai key. Vào đúng dạng: <code>/admin?key=1234</code></p>
+    <p>Sai key</p>
   {% else %}
     <p>Đúng key ✅</p>
     <table>
@@ -452,6 +452,7 @@ if _name_ == "_main_":
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
