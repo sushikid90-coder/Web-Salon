@@ -322,8 +322,34 @@ HOME_HTML = r"""
         </div>
 
         <div class="hint">
-          ✅ Combo uốn/ép/nhuộm: <b>400k – 1.000k</b> (tùy tóc) · Nhận combo nhuộm: <b>300k – 900k</b><br>
-          🎁 Đặt lịch <b>09:30</b> hoặc <b>13:00</b> giảm <b>10%</b> tổng hóa đơn
+          <b>UỐN / ÉP</b>
+<div class="price">400.000đ – 1.000.000đ</div>
+<div class="desc">
+Tạo form chuẩn, giữ nếp bền đẹp, tóc mềm mại tự nhiên – phù hợp mọi dáng tóc.
+</div>
+
+<br>
+
+<b>NHUỘM</b>
+<div class="price">300.000đ – 900.000đ</div>
+<div class="desc">
+Lên màu thời trang, tôn da – chuẩn tone, hạn chế khô xơ, phai màu.
+</div>
+
+<br>
+
+<b>✨ COMBO NHUỘM + UỐN / ÉP ✨</b>
+<div class="desc">
+Sự kết hợp hoàn hảo cho mái tóc <b>vừa vào nếp đẹp – vừa lên màu chuẩn salon</b>.
+</div>
+<div class="desc">
+🎁 <b>Tặng kèm 01 lần hấp máy phục hồi chuyên sâu</b> giúp tóc chắc khỏe,
+bóng mượt, giảm hư tổn và giữ nếp – giữ màu bền lâu hơn.
+</div>
+<div class="desc">
+Lựa chọn lý tưởng cho khách muốn làm đẹp trọn gói, tiết kiệm thời gian
+mà vẫn đảm bảo tóc khỏe đẹp từ trong ra ngoài.
+</div>
         </div>
       </div>
 
@@ -469,3 +495,4 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
