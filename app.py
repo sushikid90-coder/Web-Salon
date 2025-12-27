@@ -253,6 +253,16 @@ HOME_HTML = r"""
       font-size: 12.5px;
       border-top: 1px solid rgba(17,24,39,.06);
     }
+ /* ===== GALLERY BO TRÒN ===== */
+.gallery-item{
+  border-radius:24px;
+  overflow:hidden;
+}
+
+.gallery-item img{
+  border-radius:24px;
+  cursor: zoom-in;
+}
  /* ===== PILL ROW (Inbox + Fanpage) ===== */
 .pill-row{
   display:flex;
@@ -261,7 +271,37 @@ HOME_HTML = r"""
   align-items:center;
   margin-top:12px;
 }
+/* ===== GALLERY IMAGE ===== */
+.gallery-item img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:18px;
+  cursor:pointer;
+  transition:transform .35s ease, box-shadow .35s ease;
+}
 
+.gallery-item img:hover{
+  transform:scale(1.05);
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.lightbox img{
+  max-width:92%;
+  max-height:92%;
+  border-radius:20px;
+}
 /* ===== PILL BASE ===== */
 .pill{
   display:inline-flex;
@@ -541,6 +581,13 @@ ADMIN_HTML = r"""
       {% endif %}
     </div>
   </div>
+  <!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img">
+</div>
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img">
+</div>
 </body>
 </html>
 """
@@ -590,6 +637,7 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
