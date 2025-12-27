@@ -448,10 +448,11 @@ admin_key = os.environ.get("ADMIN_KEY", "")
             rows = con.execute("SELECT id, created_at, name, phone, date, time, service, combo, note FROM bookings ORDER BY id DESC").fetchall()
     return render_template_string(ADMIN, ok=ok, rows=rows)
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     import os
-    port = int(os.environ.get("PORT", "5000"))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
 
 
 
