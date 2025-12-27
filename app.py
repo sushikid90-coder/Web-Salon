@@ -54,6 +54,94 @@ PAGE = """
   <h2>Bin Hair Studio</h2><p
   style="Color : #888 : margin-top: -6px:">
   Uốn - Nhuộm - Phục hồi - Chăm sóc tóc nữ <?p>
+  <!-- ===== NÚT CHAT & ĐẶT LỊCH (GHIM DƯỚI MÀN HÌNH) ===== -->
+<div style="
+  position:fixed;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 28px);
+  max-width:720px;
+  display:flex;
+  gap:10px;
+  z-index:9999;
+">
+
+  <!-- CHAT NGAY (FACEBOOK) -->
+  <a href="https://www.facebook.com/messages/t/binhairstudio"
+     target="_blank"
+     style="
+      flex:1;
+      text-align:center;
+      padding:14px 10px;
+      background:linear-gradient(135deg,#1877f2,#42a5f5);
+      color:#fff;
+      font-weight:700;
+      border-radius:16px;
+      text-decoration:none;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+      line-height:1.2;
+     ">
+    💬 Chat ngay<br>
+    <span style="font-size:13px;font-weight:500;">Facebook</span>
+  </a>
+
+  <!-- GỌI HOTLINE 1 -->
+  <a href="tel:0931668146"
+     style="
+      flex:1;
+      text-align:center;
+      padding:14px 10px;
+      background:linear-gradient(135deg,#00c853,#00a843);
+      color:#fff;
+      font-weight:700;
+      border-radius:16px;
+      text-decoration:none;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+      line-height:1.2;
+     ">
+    📞 Gọi ngay<br>
+    <span style="font-size:13px;font-weight:500;">0931 668 146</span>
+  </a>
+
+  <!-- GỌI HOTLINE 2 -->
+  <a href="tel:0799978985"
+     style="
+      flex:1;
+      text-align:center;
+      padding:14px 10px;
+      background:linear-gradient(135deg,#ff6f00,#ff8f00);
+      color:#fff;
+      font-weight:700;
+      border-radius:16px;
+      text-decoration:none;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+      line-height:1.2;
+     ">
+    📞 Gọi ngay<br>
+    <span style="font-size:13px;font-weight:500;">0799 978 985</span>
+  </a>
+
+  <!-- ĐẶT LỊCH -->
+  <a href="#"
+     onclick="document.getElementById('booking-form')?.scrollIntoView({behavior:'smooth'}); return false;"
+     style="
+      flex:1;
+      text-align:center;
+      padding:14px 10px;
+      background:linear-gradient(135deg,#ff4081,#ff6f91);
+      color:#fff;
+      font-weight:700;
+      border-radius:16px;
+      text-decoration:none;
+      box-shadow:0 8px 20px rgba(0,0,0,.2);
+      line-height:1.2;
+     ">
+    📅 Đặt lịch<br>
+    <span style="font-size:13px;font-weight:500;">Nhanh & tiện</span>
+  </a>
+
+</div>
   <div style="
   background:#fff;
   border:1px solid #eee;
@@ -264,12 +352,10 @@ PAGE = """
     <button type="submit">Đặt lịch</button>
   </form>
 
-  <p>Admin: <code>/admin?key=1234</code></p>
 </body>
 </html>
 """
-
-ADMIN = """
+ """
 <!doctype html>
 <html>
 <head>
@@ -360,6 +446,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
