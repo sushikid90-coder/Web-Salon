@@ -383,7 +383,7 @@ HOME_HTML = r"""
         <!-- 1 ảnh / 1 dịch vụ để khỏi thừa -->
         <div class="gallery-grid">
           <div class="gallery-item">
-            <img src="{{ url_for('static', filename='images/balayage.jpg') }}" alt="Balayage">
+            <img src="{{ url_for('static', filename='images/Balayage.jpg') }}" alt="Balayage">
             <div class="cap">
               <div>
                 <b>BALAYAGE</b>
@@ -394,7 +394,7 @@ HOME_HTML = r"""
           </div>
 
           <div class="gallery-item">
-            <img src="{{ url_for('static', filename='images/ombre.jpg') }}" alt="Ombre">
+            <img src="{{ url_for('static', filename='images/Ombre.jpg') }}" alt="Ombre">
             <div class="cap">
               <div>
                 <b>OMBRE</b>
@@ -405,7 +405,7 @@ HOME_HTML = r"""
           </div>
 
           <div class="gallery-item">
-            <img src="{{ url_for('static', filename='images/highlights.jpg') }}" alt="Highlight">
+            <img src="{{ url_for('static', filename='images/Highlights.jpg') }}" alt="Highlights">
             <div class="cap">
               <div>
                 <b>HIGHLIGHT</b>
@@ -590,6 +590,7 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
