@@ -81,7 +81,7 @@ HOME = r"""
     }
     .msg{margin:10px 0; padding:10px 12px; border-radius:12px; background:#eef7ff; border:1px solid #cfe8ff; color:#0b4a7a;}
     .hint{color:#666; font-size:13px; margin-top:6px;}
- .price-box {
+    .price-box {
   background: #f9f9f9;
   border-radius: 14px;
   padding: 16px;
@@ -335,6 +335,7 @@ def admin():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
