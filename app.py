@@ -375,9 +375,97 @@ HOME_HTML = r"""
  .pill:active{
   transform: scale(.97);
 }
+/* ===== GALLERY IMAGE STYLE ===== */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+
+.gallery-item{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+.gallery-item img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  border-radius:18px;
+  cursor:pointer;
+  transition:transform .4s ease, filter .3s ease;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.08);
+  filter:brightness(1.05);
+}
+
+/* caption */
+.gallery-item .cap{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:12px 14px;
+  background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0));
+  color:#fff;
+}
+
+.gallery-item .cap b{
+  font-size:15px;
+  letter-spacing:.5px;
+}
+
+.gallery-item .cap .desc{
+  font-size:13px;
+  opacity:.9;
+}
+
+.gallery-item .cap .price{
+  margin-top:4px;
+  font-weight:700;
+  color:#ffd36a;
+}
+
+/* ===== LIGHTBOX (CLICK TO ZOOM) ===== */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.lightbox img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+.lightbox.show{
+  display:flex;
+}
   </style>
 </head>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
+  <img id="lightbox-img">
+</div>
 
+<script>
+  document.querySelectorAll('.gallery-item img').forEach(img=>{
+    img.onclick=()=>{
+      document.getElementById('lightbox-img').src=img.src;
+      document.getElementById('lightbox').classList.add('show');
+    }
+  })
+</script>
 <body>
   <div class="wrap">
     <div class="card">
@@ -456,22 +544,54 @@ HOME_HTML = r"""
           </div>
         </div>
 
-        <div class="hint">
-          <b>UỐN / ÉP</b>
-<div class="price">400.000đ – 1.000.000đ</div>
-<div class="desc">
-Tạo form chuẩn, giữ nếp bền đẹp, tóc mềm mại tự nhiên – phù hợp mọi dáng tóc.
+        <div class="price-sheet">
+  <h3>💰 BẢNG GIÁ DỊCH VỤ</h3>
+
+  <table class="price-table">
+    <thead>
+      <tr>
+        <th>Dịch vụ</th>
+        <th>Cơ bản</th>
+        <th>Phục hồi</th>
+        <th>Phục hồi & bảo vệ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tóc tém</td>
+        <td>400k</td>
+        <td>500k</td>
+        <td>600k</td>
+      </tr>
+      <tr>
+        <td>Tóc bob</td>
+        <td>500k</td>
+        <td>600k</td>
+        <td>700k</td>
+      </tr>
+      <tr>
+        <td>Tóc chấm vai</td>
+        <td>600k</td>
+        <td>700k</td>
+        <td>800k</td>
+      </tr>
+      <tr>
+        <td>Tóc lỡ</td>
+        <td>700k</td>
+        <td>800k</td>
+        <td>900k</td>
+      </tr>
+      <tr>
+        <td>Tóc dài</td>
+        <td>800k</td>
+        <td>900k</td>
+        <td>1.000k</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="note">* Giá có thể thay đổi theo độ dài & tình trạng tóc</p>
 </div>
-
-<br>
-
-<b>NHUỘM</b>
-<div class="price">300.000đ – 900.000đ</div>
-<div class="desc">
-Lên màu thời trang, tôn da – chuẩn tone, hạn chế khô xơ, phai màu.
-</div>
-
-<br>
 
 <b>✨ COMBO NHUỘM + UỐN / ÉP ✨</b>
 <div class="desc">
@@ -637,6 +757,7 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
