@@ -405,7 +405,7 @@ HOME_HTML = r"""
           </div>
 
           <div class="gallery-item">
-            <img src="{{ url_for('static', filename='images/highlight.jpg') }}" alt="Highlight">
+            <img src="{{ url_for('static', filename='images/highlights.jpg') }}" alt="Highlight">
             <div class="cap">
               <div>
                 <b>HIGHLIGHT</b>
@@ -590,6 +590,7 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
