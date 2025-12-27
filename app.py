@@ -3,7 +3,7 @@ import sqlite3
 import os
 from datetime import datetime
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # ========== CONFIG ==========
 DB = os.environ.get("DB_PATH", "bookings.db")
@@ -301,3 +301,4 @@ def admin():
 if _name_ == "_main_":
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
