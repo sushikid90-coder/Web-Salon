@@ -332,6 +332,9 @@ HOME_HTML = r"""
     font-size:14px;
   }
 }
+ .pill:active{
+  transform: scale(.97);
+}
   </style>
 </head>
 
@@ -587,5 +590,6 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
