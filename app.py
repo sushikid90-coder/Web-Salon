@@ -147,22 +147,26 @@ HOME = r"""
         <h3 style="margin:10px 0 8px;">💰 Bảng giá dịch vụ</h3>
         <div class="service">
 BALAYAGE
-- Balayage 250k
-- Balayage + Balayage 2
+- Balayage
+Phù hợp khách thích tóc Tây,không lộ chân tóc
   Hiệu ứng sáng tự nhiên, sang trọng.
-  100k - 200k
-
+  1.500k - 2.500k
+OMBRE
+1.000k-2.000k
+Chuyển màu đậm --> nhạt rõ ràng 
+Cá tính - nổi bật - thời thượng 
 HIGHLIGHT
-- Highlight 100k
-- Highlight 2
+400k-800k
+Tăng độ dày,chiều sâu cho mái tóc 
   Tạo điểm nhấn, che sâu mái tóc.
 
-COMBO uốn/ép/nhuộm… (tuỳ tóc) 400.000 - 1.000.000đ
-Nhận Combo: Nhuộm có 300.000 - 900.000đ
-
+COMBO uốn/ép/…  400.000 - 1.000.000đ (tuỳ chiều dài tóc)
+ Nhuộm màu thời trang ( tuỳ chiều dài tóc)
+ 300.000 - 900.000đ
+ComBo nhuộm-uốn được nằm máy hấp phục hồi chuyên sâu cho tóc hư tổn vừa qua hoá chất 
 🎁 ƯU ĐÃI KHUNG GIỜ VÀNG
-- Đặt lịch 09:30 sáng giảm 10% tổng hóa đơn
-- Đặt lịch 13:00 trưa giảm 10% tổng hóa đơn
+- Đặt lịch 07:30 - 09:30 sáng giảm 10% tổng hóa đơn
+- Đi 2 người sẽ được giảm 10% tổng hoá đơn 
         </div>
       </div>
 
@@ -331,6 +335,7 @@ def admin():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
