@@ -164,10 +164,11 @@ PAGE = """
     <div class="hair-title">BALAYAGE</div>
     <div class="hair-price">1.500k – 2.500k</div>
   </div>
-
-  <div class="hair-photos">
-    <img src="/static/images/balayage1.jpg" alt="balayage 1">
-    <img src="/static/images/balayage2.jpg" alt="balayage 2">
+<div class="hair-photos">
+  <img src="https://raw.githubusercontent.com/USERNAME/Web-Salon/master/static/images/balayage1.jpg" alt="balayage 1">
+  <img src="https://raw.githubusercontent.com/USERNAME/Web-Salon/master/static/images/balayage2.jpg" alt="balayage 2">
+</div>
+  
 </div>
   </div>
   <div class="hair-note">
@@ -179,9 +180,10 @@ PAGE = """
     <div class="hair-title">OMBRE</div>
     <div class="hair-price">1.000k – 2.000k</div>
   </div>
-  <div class="hair-photos">
-    <img src="/static/images/ombre1.jpg" alt="ombre 1">
-    <img src="/static/images/ombre2.jpg" alt="ombre 2">
+ <div class="hair-photos">
+  <img src="https://raw.githubusercontent.com/USERNAME/Web-Salon/master/static/images/ombre1.jpg" alt="ombre 1">
+  <img src="https://raw.githubusercontent.com/USERNAME/Web-Salon/master/static/images/ombre2.jpg" alt="ombre 2">
+</div>
 </div>
   </div>
   <div class="hair-note">
@@ -194,9 +196,10 @@ PAGE = """
     <div class="hair-title">HIGHLIGHT</div>
     <div class="hair-price">400k – 800k</div>
   </div>
-  <div class="hair-photos">
-    <img src="/static/images/highlight1.jpg" alt="highlight 1">
-    <img src="/static/images/highlight2.jpg" alt="highlight 2">
+ <div class="hair-photos">
+  <img src="https://raw.githubusercontent.com/USERNAME/Web-Salon/master/static/images/highlight1.jpg" alt="highlight 1">
+  <img src="https://raw.githubusercontent.com/USERNAME/Web-Salon/master/static/images/highlight2.jpg" alt="highlight 2">
+</div>
 </div>
   </div>
 
@@ -446,6 +449,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
