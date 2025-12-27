@@ -253,6 +253,85 @@ HOME_HTML = r"""
       font-size: 12.5px;
       border-top: 1px solid rgba(17,24,39,.06);
     }
+ /* ===== PILL ROW (Inbox + Fanpage) ===== */
+.pill-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;              /* mobile tự xuống dòng */
+  align-items:center;
+  margin-top:12px;
+}
+
+/* ===== PILL BASE ===== */
+.pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:13px;
+  line-height:1;
+
+  text-decoration:none;
+  user-select:none;
+  cursor:pointer;
+
+  color:#0f172a;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(17,24,39,.12);
+  box-shadow:0 10px 22px rgba(17,24,39,.10);
+
+  transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.pill:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 30px rgba(17,24,39,.16);
+  filter:saturate(1.05);
+}
+
+.pill:active{
+  transform:translateY(0px) scale(.99);
+}
+
+/* focus cho bàn phím */
+.pill:focus-visible{
+  outline:3px solid rgba(59,130,246,.35);
+  outline-offset:2px;
+}
+
+/* ===== VARIANTS ===== */
+.pill-fb{
+  color:#fff;
+  border:none;
+  background:linear-gradient(135deg,#1877f2,#0ea5e9);
+}
+
+.pill-fanpage{
+  color:#fff;
+  border:none;
+  background:linear-gradient(135deg,#8b5cf6,#ec4899);
+}
+
+/* icon nhỏ xinh */
+.pill .ico{
+  font-size:14px;
+  line-height:1;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:520px){
+  .pill-row{ gap:8px; }
+  .pill{
+    width:100%;               /* mobile mỗi pill 1 dòng cho đẹp */
+    justify-content:center;
+    padding:12px 14px;
+    font-size:14px;
+  }
+}
   </style>
 </head>
 
@@ -264,7 +343,20 @@ HOME_HTML = r"""
           <h1>Bin Hair Studio</h1>
           <p class="sub">Uốn · Nhuộm · Phục hồi · Chăm sóc tóc nữ</p>
           <div style="margin-top:10px">
-            <span class="pill">📍 Inbox Facebook để tư vấn & đặt lịch nhanh</span>
+  <div class="pill-row">
+  <a class="pill pill-fb"
+     href="https://m.me/615653177211912"
+     target="_blank" rel="noopener">
+     💬 Inbox Facebook • Tư vấn & đặt lịch nhanh
+  </a>
+
+  <a class="pill pill-fanpage"
+     href="https://www.facebook.com/profile.php?id=615653177211912"
+     target="_blank" rel="noopener">
+     📌 Fanpage Bin Hair Studio
+  </a>
+</div>
+</div>
           </div>
         </div>
         <div style="text-align:right">
@@ -495,4 +587,5 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
