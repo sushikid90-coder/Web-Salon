@@ -81,7 +81,37 @@ HOME = r"""
     }
     .msg{margin:10px 0; padding:10px 12px; border-radius:12px; background:#eef7ff; border:1px solid #cfe8ff; color:#0b4a7a;}
     .hint{color:#666; font-size:13px; margin-top:6px;}
-  </style>
+ .price-box {
+  background: #f9f9f9;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.price-box h4 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.price {
+  font-weight: 700;
+  color: #d35400;
+  margin: 4px 0;
+}
+
+.desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.note {
+  font-size: 13px;
+  color: #777;
+  margin-top: 12px;
+}
+  
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -301,5 +331,6 @@ def admin():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
