@@ -25,6 +25,32 @@ PAGE = """
   </style>
 </head>
 <body>
+<hr style="margin:24px 0">
+
+<div style="
+  border:1px solid #e9d8e6;
+  border-radius:14px;
+  padding:14px;
+  background:#fff7fb;
+">
+
+  <b style="font-size:16px;">🔵 Facebook Bin Hair Studio</b>
+
+  <div style="margin-top:10px; line-height:1.8;">
+    👉 Inbox Facebook để tư vấn & đặt lịch nhanh<br>
+
+    🔗 
+    <a 
+      href="https://www.facebook.com/binhairstudio" 
+      target="_blank"
+      style="color:#1877f2; font-weight:700; text-decoration:none;"
+    >
+      facebook.com/binhairstudio
+    </a>
+  </div>
+
+</div>
+
   <h2>Bin Hair Studio</h2><p
   style="Color : #888 : margin-top: -6px:">
   Uốn - Nhuộm - Phục hồi - Chăm sóc tóc nữ <?p>
@@ -334,6 +360,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
