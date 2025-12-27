@@ -43,6 +43,50 @@ HOME_HTML = r"""
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Bin Hair Studio</title>
+  /* CSS cũ ở trên */
+
+/* ===== LIGHTBOX XỊN XÒ ===== */
+.lightbox{
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 22, 18, 0.85);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeBg .25s ease;
+}
+
+.lightbox img{
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.65);
+  transform: scale(.85);
+  opacity: 0;
+  animation: zoomIn .28s ease forwards;
+  cursor: zoom-out;
+}
+
+.lightbox.show{
+  display: flex;
+}
+
+@keyframes zoomIn{
+  to{ transform: scale(1); opacity: 1; }
+}
+@keyframes fadeBg{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* mobile */
+@media (max-width:520px){
+  .lightbox img{ border-radius:16px; }
+}
+
+</style>   <!-- ← GIỮ NGUYÊN DÒNG NÀY -->
   <style>
     :root{
       --bg1:#0ea5e9;
@@ -757,6 +801,7 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
