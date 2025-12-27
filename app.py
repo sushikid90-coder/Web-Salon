@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template_string
 import sqlite3
+import os
 from datetime import datetime
 
 app = Flask(__name__)
@@ -437,7 +438,9 @@ def book():
 @app.get("/admin")
 def admin():
     key = request.args.get("key", "")
-    admin_key = "1234"   # đổi key tại đây
+    import os
+admin_key = os.environ.get("ADMIN_KEY", "")
+
     ok = (key == admin_key)
     rows = []
     if ok:
@@ -449,6 +452,7 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", "5000"))
     app.run(host="0.0.0.0", port=port, debug=True)
+
 
 
 
