@@ -5,276 +5,396 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# ========== CONFIG ==========
-DB = os.environ.get("DB_PATH", "bookings.db")
-# Deploy (Render) nhớ set biến môi trường ADMIN_KEY (Settings -> Environment)
+DB_PATH = "bookings.db"
+
+# Admin key: đặt trên Render Environment -> ADMIN_KEY
+# Nếu chưa đặt thì tạm dùng 1234
 ADMIN_KEY = os.environ.get("ADMIN_KEY", "1234")
 
-
-# ========== DB HELPERS ==========
-def get_conn():
-    conn = sqlite3.connect(DB)
+def db():
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
-
 def init_db():
-    with get_conn() as con:
-        con.execute(
-            """
-            CREATE TABLE IF NOT EXISTS bookings (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                created_at TEXT,
-                name TEXT,
-                phone TEXT,
-                date TEXT,
-                time TEXT,
-                service TEXT,
-                combo TEXT,
-                note TEXT
-            )
-            """
+    conn = db()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS bookings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            created_at TEXT,
+            name TEXT,
+            phone TEXT,
+            date TEXT,
+            time TEXT,
+            service TEXT,
+            combo TEXT,
+            note TEXT
         )
-        con.commit()
-
+    """)
+    conn.commit()
+    conn.close()
 
 init_db()
 
-
-# ========== HTML ==========
-HOME = r"""
+HOME_HTML = r"""
 <!doctype html>
-<html>
+<html lang="vi">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Bin Hair Studio</title>
   <style>
-    body{font-family:Arial; margin:0; padding:0; background:#f6f7fb;}
-    .wrap{max-width:900px; margin:24px auto; padding:0 12px;}
-    .card{background:#fff; border:1px solid #e6e6e6; border-radius:16px; padding:18px; box-shadow:0 6px 18px rgba(0,0,0,.06);}
-    h1{margin:0 0 8px;}
-    .sub{color:#555; margin:0 0 14px;}
-    .btns{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 6px;}
+    :root{
+      --bg1:#0ea5e9;
+      --bg2:#22c55e;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --text:#111827;
+      --shadow: 0 18px 45px rgba(0,0,0,.12);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 700px at 10% 10%, rgba(34,197,94,.25), transparent 60%),
+        radial-gradient(900px 650px at 90% 20%, rgba(14,165,233,.25), transparent 55%),
+        linear-gradient(135deg, #f8fafc, #eef2ff);
+      padding: 22px 12px 40px;
+    }
+    .wrap{max-width: 960px; margin:0 auto;}
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      border: 1px solid rgba(17,24,39,.06);
+    }
+    .hero{
+      padding: 20px 18px 10px;
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size: 30px;
+      letter-spacing: .2px;
+    }
+    .sub{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .pill{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius: 999px;
+      background: rgba(17,24,39,.04);
+      color: #111827;
+      font-weight: 600;
+      font-size: 13px;
+      border: 1px solid rgba(17,24,39,.06);
+    }
+
+    /* Buttons row */
+    .btns{
+      padding: 0 18px 16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
     .btn{
-      display:flex; align-items:center; justify-content:center;
-      gap:8px; min-width:180px;
-      padding:14px 10px; border-radius:16px; text-decoration:none;
-      color:#fff; font-weight:700; box-shadow:0 8px 20px rgba(0,0,0,.18);
+      flex: 1 1 220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 14px 12px;
+      border-radius: 16px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.2px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.10);
+      transform: translateY(0);
+      transition: .15s ease;
+      user-select:none;
     }
-    .b1{background:linear-gradient(135deg,#00c853,#00a843);}
-    .b2{background:linear-gradient(135deg,#ff6f00,#ff8f00);}
-    .btn span{display:block; font-size:13px; font-weight:600; opacity:.95;}
-    .section{margin-top:14px;}
-    .service{white-space:pre-line; background:#fafafa; border:1px dashed #ddd; padding:12px; border-radius:12px; line-height:1.45;}
-    form{margin-top:12px;}
+    .btn:hover{ transform: translateY(-1px); }
+    .btn span{
+      display:block;
+      font-weight:700;
+      font-size: 13px;
+      opacity:.9;
+    }
+    .b1{ background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .b2{ background: linear-gradient(135deg, #f97316, #fb7185); }
+    .b3{ background: linear-gradient(135deg, #0ea5e9, #2563eb); }
+
+    /* Section */
+    .section{
+      padding: 14px 18px 18px;
+      border-top: 1px solid rgba(17,24,39,.06);
+    }
+    .section h3{
+      margin: 0 0 12px;
+      font-size: 18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+      line-height:1.4;
+    }
+
+    /* Gallery */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 860px){
+      .gallery-grid{ grid-template-columns: 1fr; }
+      .btn{ flex:1 1 100%; }
+    }
+    .gallery-item{
+      border-radius: 16px;
+      overflow:hidden;
+      border: 1px solid rgba(17,24,39,.08);
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(0,0,0,.07);
+    }
+    .gallery-item img{
+      width:100%;
+      height: 220px;
+      object-fit: cover;
+      display:block;
+      background: #f3f4f6;
+    }
+    .cap{
+      padding: 12px 12px 13px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .cap b{font-size:14px}
+    .cap .price{
+      font-weight:900;
+      color:#b45309;
+      white-space:nowrap;
+      font-size: 13px;
+    }
+    .cap .desc{
+      margin-top:6px;
+      color: var(--muted);
+      font-size:12.5px;
+      line-height:1.35;
+    }
+
+    /* Booking */
+    form{
+      display:grid;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .row{ grid-template-columns: 1fr; }
+    }
     input, textarea{
-      width:100%; box-sizing:border-box; padding:12px;
-      border:1px solid #ddd; border-radius:12px; margin:8px 0; font-size:15px;
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(17,24,39,.14);
       outline:none;
+      font-size: 14px;
+      background: #fff;
     }
-    .row{display:flex; gap:10px;}
-    .row > div{flex:1;}
-    button{
-      width:100%; padding:14px 12px; border:0; border-radius:14px;
-      background:#111; color:#fff; font-weight:800; cursor:pointer;
+    textarea{ min-height: 90px; resize: vertical; }
+    .submit{
+      padding: 14px 14px;
+      border:0;
+      border-radius: 16px;
+      background: #111827;
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow: 0 10px 25px rgba(17,24,39,.22);
     }
-    .msg{margin:10px 0; padding:10px 12px; border-radius:12px; background:#eef7ff; border:1px solid #cfe8ff; color:#0b4a7a;}
-    .hint{color:#666; font-size:13px; margin-top:6px;}
-    .price-box {
-  background: #f9f9f9;
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
+    .submit:hover{ filter: brightness(1.05); }
 
-.price-box h4 {
-  margin: 0 0 6px;
-  font-size: 18px;
-}
-
-.price {
-  font-weight: 700;
-  color: #d35400;
-  margin: 4px 0;
-}
-
-.desc {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.5;
-}
-
-.note {
-  font-size: 13px;
-  color: #777;
-  margin-top: 12px;
-}
-  
-</style>
+    .msg{
+      margin: 0 18px 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.25);
+      color: #166534;
+      font-weight: 700;
+    }
+    .footer{
+      padding: 10px 18px 18px;
+      color: var(--muted);
+      font-size: 12.5px;
+      border-top: 1px solid rgba(17,24,39,.06);
+    }
+  </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>Bin Hair Studio</h1>
-      <p class="sub">Uốn - Nhuộm - Phục hồi - Chăm sóc tóc nữ</p>
+      <div class="hero">
+        <div>
+          <h1>Bin Hair Studio</h1>
+          <p class="sub">Uốn · Nhuộm · Phục hồi · Chăm sóc tóc nữ</p>
+          <div style="margin-top:10px">
+            <span class="pill">📍 Inbox Facebook để tư vấn & đặt lịch nhanh</span>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="pill">⏰ Giờ vàng: 07:30 & 09:30 (-10%)</div>
+        </div>
+      </div>
 
       {% if msg %}
         <div class="msg">{{ msg }}</div>
       {% endif %}
 
       <div class="btns">
-        <!-- Hotline 1 -->
-        <a class="btn b1" href="tel:0931668146">
-          📞 Gọi ngay<br>
-          <span>0931 668 146</span>
-        </a>
-
-        <!-- Hotline 2 -->
-        <a class="btn b2" href="tel:0799978985">
-          📞 Gọi ngay<br>
-          <span>0799 978 985</span>
-        </a>
-
-        <!-- Đặt lịch -->
-        <a class="btn b1" href="#booking-form"
-           onclick="document.getElementById('booking-form').scrollIntoView({behavior:'smooth'}); return false;">
-          🗓️ Đặt lịch
-        </a>
+        <a class="btn b1" href="tel:0931668146">📞 Gọi ngay <span>0931 668 146</span></a>
+        <a class="btn b2" href="tel:0799978985">📞 Gọi ngay <span>0799 978 985</span></a>
+        <a class="btn b3" href="#booking-form" onclick="document.getElementById('booking-form').scrollIntoView({behavior:'smooth'});return false;">🗓️ Đặt lịch <span>nhanh trong 30s</span></a>
       </div>
 
       <div class="section">
-        <h3 style="margin:10px 0 8px;">💰 Bảng giá dịch vụ</h3>
-        <div class="service">
-<div class="gallery-grid">
+        <h3>💰 Bảng giá dịch vụ</h3>
 
-  <div class="gallery-item">
-    <img src="{{ url_for('static', filename='images/balayage-1.jpg') }}">
-    <div class="cap">
-      <b>BALAYAGE</b>
-      <span>1.500k – 2.500k</span>
-    </div>
-  </div>
-    </div>
-  </div>
-  <div class="gallery-item">
-    <img src="{{ url_for('static', filename='images/ombre-1.jpg') }}">
-    <div class="cap">
-      <b>OMBRE</b>
-      <span>1.000k – 2.000k</span>
-    </div>
-  </div>
-    </div>
-  </div>
-  <div class="gallery-item">
-    <img src="{{ url_for('static', filename='images/highlight-1.jpg') }}">
-    <div class="cap">
-      <b>HIGHLIGHT</b>
-      <span>400k – 800k</span>
-    </div>
-  </div>
-    </div>
+        <!-- 1 ảnh / 1 dịch vụ để khỏi thừa -->
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/balayage.jpg') }}" alt="Balayage">
+            <div class="cap">
+              <div>
+                <b>BALAYAGE</b>
+                <div class="desc">Sáng tự nhiên · sang · không lộ chân tóc</div>
+              </div>
+              <div class="price">1.500k – 2.500k</div>
+            </div>
+          </div>
 
-</div>        
-BALAYAGE
-- Balayage
-Phù hợp khách thích tóc Tây,không lộ chân tóc
-  Hiệu ứng sáng tự nhiên, sang trọng.
-  1.500k - 2.500k
-OMBRE
-1.000k-2.000k
-Chuyển màu đậm --> nhạt rõ ràng 
-Cá tính - nổi bật - thời thượng 
-HIGHLIGHT
-400k-800k
-Tăng độ dày,chiều sâu cho mái tóc 
-  Tạo điểm nhấn, che sâu mái tóc.
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/ombre.jpg') }}" alt="Ombre">
+            <div class="cap">
+              <div>
+                <b>OMBRE</b>
+                <div class="desc">Chuyển màu đậm → nhạt rõ · cá tính</div>
+              </div>
+              <div class="price">1.000k – 2.000k</div>
+            </div>
+          </div>
 
-COMBO uốn/ép/…  400.000 - 1.000.000đ (tuỳ chiều dài tóc)
- Nhuộm màu thời trang ( tuỳ chiều dài tóc)
- 300.000 - 900.000đ
-ComBo nhuộm-uốn được nằm máy hấp phục hồi chuyên sâu cho tóc hư tổn vừa qua hoá chất 
-🎁 ƯU ĐÃI KHUNG GIỜ VÀNG
-- Đặt lịch 07:30 - 09:30 sáng giảm 10% tổng hóa đơn
-- Đi 2 người sẽ được giảm 10% tổng hoá đơn 
+          <div class="gallery-item">
+            <img src="{{ url_for('static', filename='images/highlight.jpg') }}" alt="Highlight">
+            <div class="cap">
+              <div>
+                <b>HIGHLIGHT</b>
+                <div class="desc">Tạo điểm nhấn · che sâu mái · tăng độ dày</div>
+              </div>
+              <div class="price">400k – 800k</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">
+          ✅ Combo uốn/ép/nhuộm: <b>400k – 1.000k</b> (tùy tóc) · Nhận combo nhuộm: <b>300k – 900k</b><br>
+          🎁 Đặt lịch <b>09:30</b> hoặc <b>13:00</b> giảm <b>10%</b> tổng hóa đơn
         </div>
       </div>
 
       <div class="section" id="booking-form">
-        <h3 style="margin:10px 0 8px;">📝 Inbox Facebook để tư vấn & đặt lịch nhanh</h3>
-
-        <form method="post" action="{{ url_for('book') }}">
-          <input name="name" placeholder="Tên" required />
-          <input name="phone" placeholder="SĐT" required />
+        <h3>📝 Đặt lịch nhanh</h3>
+        <form method="post" action="/">
+          <input name="name" placeholder="Tên" required>
+          <input name="phone" placeholder="SĐT" type="tel" required>
 
           <div class="row">
-            <div><input type="date" name="date" required /></div>
-            <div><input type="time" name="time" required /></div>
+            <input type="date" name="date" required>
+            <input type="time" name="time" required>
           </div>
 
-          <input name="service" placeholder="Dịch vụ (uốn/nhuộm/phục hồi…)" />
-          <input name="combo" placeholder="Combo (nếu có)" />
-          <textarea name="note" placeholder="Ghi chú"></textarea>
+          <input name="service" placeholder="Dịch vụ (uốn/nhuộm/ép/phục hồi...)">
+          <input name="combo" placeholder="Combo (nếu có)">
+          <textarea name="note" placeholder="Ghi chú (tóc yếu/đã tẩy/khung giờ...)"></textarea>
 
-          <button type="submit">Đặt lịch</button>
-          <div class="hint">* Sau khi đặt lịch, salon sẽ liên hệ xác nhận.</div>
+          <button class="submit" type="submit">✅ Xác nhận đặt lịch</button>
         </form>
+
+        <div class="hint">
+          Sau khi gửi, salon sẽ inbox/ gọi xác nhận lịch sớm nhất.
+        </div>
       </div>
 
+      <div class="footer">
+        © Bin Hair Studio · Made with ❤️
+      </div>
     </div>
   </div>
 </body>
 </html>
 """
 
-ADMIN = r"""
+ADMIN_HTML = r"""
 <!doctype html>
-<html>
+<html lang="vi">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Admin - Web Salon</title>
+  <title>Admin - Bin Hair Studio</title>
   <style>
-    body{font-family:Arial; background:#f6f7fb; margin:0;}
-    .wrap{max-width:1100px; margin:24px auto; padding:0 12px;}
-    .card{background:#fff; border:1px solid #e6e6e6; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,.06);}
-    table{width:100%; border-collapse:collapse;}
-    th,td{border-bottom:1px solid #eee; padding:10px; text-align:left; vertical-align:top;}
-    th{background:#fafafa;}
-    .ok{display:inline-block; padding:6px 10px; border-radius:999px; background:#e8fff1; color:#067d3c; border:1px solid #bff0d0; font-weight:700;}
-    .bad{display:inline-block; padding:6px 10px; border-radius:999px; background:#ffecec; color:#a30000; border:1px solid #ffc5c5; font-weight:700;}
-    .top{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-    .keybox{padding:10px 12px; border:1px solid #ddd; border-radius:12px; min-width:240px;}
-    .btn{padding:10px 12px; background:#111; color:#fff; border-radius:12px; text-decoration:none; font-weight:700;}
-    .muted{color:#666;}
+    body{font-family:system-ui,Segoe UI,Arial; background:#f6f7fb; margin:0; padding:18px;}
+    .wrap{max-width:1000px; margin:0 auto;}
+    .card{background:#fff; border:1px solid #e6e7ee; border-radius:16px; padding:16px; box-shadow:0 12px 30px rgba(0,0,0,.06);}
+    h2{margin:0 0 10px}
+    .muted{color:#6b7280}
+    table{width:100%; border-collapse:collapse; font-size:14px; margin-top:10px;}
+    th,td{border-bottom:1px solid #eee; padding:10px 8px; text-align:left; vertical-align:top;}
+    th{background:#fafafa}
+    code{background:#f3f4f6; padding:2px 6px; border-radius:8px}
+    .bad{background:#fee2e2; border:1px solid #fecaca; color:#7f1d1d; padding:12px; border-radius:12px; font-weight:700;}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
-      <div class="top">
-        <h2 style="margin:0;">Admin</h2>
-        {% if ok %}
-          <span class="ok">Đúng key ✅</span>
-        {% else %}
-          <span class="bad">Sai key ❌</span>
-        {% endif %}
-        <span class="muted">Mở: /admin?key=YOUR_KEY</span>
-      </div>
+      <h2>Admin</h2>
 
-      <div style="margin:12px 0;">
-        <form method="get" action="{{ url_for('admin') }}">
-          <input class="keybox" name="key" placeholder="Nhập key admin..." value="{{ key|e }}" />
-          <button class="btn" type="submit">Xem</button>
-          <a class="btn" href="{{ url_for('home') }}" style="background:#4b5563;">Về trang chủ</a>
-        </form>
-      </div>
-
-      {% if ok %}
+      {% if not ok %}
+        <div class="bad">
+          Sai key. Vào đúng dạng:
+          <code>/admin?key=YOUR_KEY</code>
+        </div>
+      {% else %}
+        <div class="muted">Tổng lịch: <b>{{ rows|length }}</b></div>
         <table>
           <tr>
             <th>ID</th>
-            <th>Created</th>
+            <th>Thời gian tạo</th>
             <th>Tên</th>
             <th>SĐT</th>
             <th>Ngày</th>
@@ -297,8 +417,6 @@ ADMIN = r"""
           </tr>
           {% endfor %}
         </table>
-      {% else %}
-        <p class="muted">Nhập đúng key để xem danh sách đặt lịch.</p>
       {% endif %}
     </div>
   </div>
@@ -306,69 +424,48 @@ ADMIN = r"""
 </html>
 """
 
-
-# ========== ROUTES ==========
-@app.get("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    msg = request.args.get("msg", "")
-    return render_template_string(HOME, msg=msg)
+    if request.method == "POST":
+        name = (request.form.get("name") or "").strip()
+        phone = (request.form.get("phone") or "").strip()
+        date = (request.form.get("date") or "").strip()
+        time = (request.form.get("time") or "").strip()
+        service = (request.form.get("service") or "").strip()
+        combo = (request.form.get("combo") or "").strip()
+        note = (request.form.get("note") or "").strip()
 
+        if not name or not phone or not date or not time:
+            return render_template_string(HOME_HTML, msg="❌ Thiếu thông tin bắt buộc (Tên/SĐT/Ngày/Giờ).")
 
-@app.post("/book")
-def book():
-    name = (request.form.get("name") or "").strip()
-    phone = (request.form.get("phone") or "").strip()
-    date = (request.form.get("date") or "").strip()
-    time_ = (request.form.get("time") or "").strip()
-    service = (request.form.get("service") or "").strip()
-    combo = (request.form.get("combo") or "").strip()
-    note = (request.form.get("note") or "").strip()
-
-    # Bắt buộc tối thiểu
-    if not (name and phone and date and time_):
-        return redirect(url_for("home", msg="Thiếu thông tin, nhập lại nhé!"))
-
-    created_at = datetime.now().isoformat(timespec="seconds")
-
-    with get_conn() as con:
-        con.execute(
-            """
-            INSERT INTO bookings(created_at, name, phone, date, time, service, combo, note)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (created_at, name, phone, date, time_, service, combo, note),
+        conn = db()
+        conn.execute(
+            "INSERT INTO bookings(created_at,name,phone,date,time,service,combo,note) VALUES (?,?,?,?,?,?,?,?)",
+            (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name, phone, date, time, service, combo, note)
         )
-        con.commit()
+        conn.commit()
+        conn.close()
 
-    return redirect(url_for("home", msg="Đặt lịch thành công! Salon sẽ liên hệ xác nhận."))
+        return redirect(url_for("home", ok=1))
 
+    msg = None
+    if request.args.get("ok") == "1":
+        msg = "✅ Đặt lịch thành công! Salon sẽ liên hệ xác nhận sớm nhất."
+    return render_template_string(HOME_HTML, msg=msg)
 
-@app.get("/admin")
+@app.route("/admin")
 def admin():
     key = request.args.get("key", "")
     ok = (key == ADMIN_KEY)
 
     rows = []
     if ok:
-        with get_conn() as con:
-            rows = con.execute(
-                """
-                SELECT id, created_at, name, phone, date, time, service, combo, note
-                FROM bookings
-                ORDER BY id DESC
-                """
-            ).fetchall()
+        conn = db()
+        rows = conn.execute("SELECT * FROM bookings ORDER BY id DESC").fetchall()
+        conn.close()
 
-    return render_template_string(ADMIN, ok=ok, rows=rows, key=key)
-
+    return render_template_string(ADMIN_HTML, ok=ok, rows=rows)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", "5000"))
-    app.run(host="0.0.0.0", port=port, debug=True)
-
-
-
-
-
-
-
+    # chạy local: python app.py
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
