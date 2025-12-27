@@ -348,13 +348,13 @@ HOME_HTML = r"""
           <div style="margin-top:10px">
   <div class="pill-row">
   <a class="pill pill-fb"
-     href="https://m.me/615653177211912"
+     href="https://m.me/61566317721912"
      target="_blank" rel="noopener">
      💬 Inbox Facebook • Tư vấn & đặt lịch nhanh
   </a>
 
   <a class="pill pill-fanpage"
-     href="https://www.facebook.com/profile.php?id=615653177211912"
+     href="https://www.facebook.com/profile.php?id=61566317721912"
      target="_blank" rel="noopener">
      📌 Fanpage Bin Hair Studio
   </a>
@@ -590,6 +590,7 @@ def admin():
 if __name__ == "__main__":
     # chạy local: python app.py
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
 
 
 
